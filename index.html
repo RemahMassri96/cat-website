@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cat</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header style="background-image: url(images/home-header.jpg);">
+        <div class="overlay">
+            <div class="text">
+                <h1>The Jordan Cat Rescue</h1>
+                <a href="add.html" class="add-cat">Add Cat</a>
+            </div>
+        </div>
+    </header>
+    <div class="home-page">
+  
+        <div class="gallery-sec">
+            <div class="container">
+                <h2>Cats can be Rescue </h2>
+                <div class="gallery" id="gallery">
+       
+                </div>
+            </div>
+       
+        </div>
+    </div>
+    <footer>
+        <h6>copyright &copy; 2020</h6>
+    </footer>
+    <script>
+
+function ajax_get(url, callback) {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+            console.log('responseText:' + xmlhttp.responseText);
+            try {
+                var data = JSON.parse(xmlhttp.responseText);
+            } catch(err) {
+                console.log(err.message + " in " + xmlhttp.responseText);
+                return;
+            }
+            callback(data);
+        }
+    };
+ 
+    xmlhttp.open("GET", url, true);
+    xmlhttp.send();
+}
+ 
+ajax_get('/data.json', function(data) {
+    // console.log(data);
+    
+        var html = '';
+ 
+
+       for (var i=0; i < data.length; i++) {
+        console.log(data[i].id);
+        
+      html += `
+      <div class="box">
+                        <div class="box-inner">
+                            <div class="img">
+                                <img src="https://res.cloudinary.com/petrescue/image/upload/ar_1:1,c_fill,dpr_auto,f_auto,fl_lossy,g_face,q_auto,w_auto:100:500/v1587638586/jpg7fa1gqyafqwnsxi2e.jpg" alt="">
+                            </div>
+                            <div class="text">
+                                <h4>${data[i].id}</h4>
+                                <span class="locat">Milsons Point, NSW
+                                </span>
+                                <a href="#">More info</a>
+                            </div>
+                        </div>
+                 
+                    </div>`
+       }
+
+    document.getElementById("gallery").innerHTML = html;
+});
+
+    </script>
+</body>
+</html>
